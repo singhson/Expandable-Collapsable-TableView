@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Items</key>
+	<array>
+		<dict>
+			<key>Name</key>
+			<string>Item 0</string>
+			<key>level</key>
+			<string>0</string>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 1</string>
+			<key>level</key>
+			<integer>0</integer>
+			<key>SubItems</key>
+			<array>
+				<dict>
+					<key>Name</key>
+					<string>SubItem 0</string>
+					<key>level</key>
+					<integer>1</integer>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>SubItem 1</string>
+					<key>level</key>
+					<integer>1</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 2</string>
+			<key>level</key>
+			<integer>0</integer>
+			<key>SubItems</key>
+			<array>
+				<dict>
+					<key>Name</key>
+					<string>SubItem 1</string>
+					<key>level</key>
+					<integer>1</integer>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>SubItem 2</string>
+					<key>level</key>
+					<integer>1</integer>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 3</string>
+			<key>level</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 4</string>
+			<key>level</key>
+			<string>0</string>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 5</string>
+			<key>level</key>
+			<string>0</string>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 6</string>
+			<key>level</key>
+			<string>0</string>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 7</string>
+			<key>level</key>
+			<string>0</string>
+		</dict>
+		<dict>
+			<key>Name</key>
+			<string>Item 8</string>
+			<key>level</key>
+			<string>0</string>
+		</dict>
+	</array>
+</dict>
+</plist>
