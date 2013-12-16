@@ -12,7 +12,7 @@
 @interface ExpandableTableViewController ()
 @end
 
-NSString *Title;
+
 
 @implementation ExpandableTableViewController
 
@@ -32,8 +32,8 @@ NSString *Title;
     
 	NSDictionary *dict=[[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"data" ofType:@"plist"]];
 	self.items=[dict valueForKey:@"Items"];
-	self.itemsForTable=[[NSMutableArray alloc] init];
-	[self.itemsForTable addObjectsFromArray:self.items];
+	self.itemsInTable=[[NSMutableArray alloc] init];
+	[self.itemsInTable addObjectsFromArray:self.items];
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,70 +46,68 @@ NSString *Title;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.itemsForTable count];
+    return [self.itemsInTable count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Title = [[self.itemsForTable objectAtIndex:indexPath.row] valueForKey:@"Name"];
+    NSString *Title= [[self.itemsInTable objectAtIndex:indexPath.row] valueForKey:@"Name"];
     
-    return [self createCellWithTitle:Title image:[[self.itemsForTable objectAtIndex:indexPath.row] valueForKey:@"Image name"] indexPath:indexPath];
+    return [self createCellWithTitle:Title image:[[self.itemsInTable objectAtIndex:indexPath.row] valueForKey:@"Image name"] indexPath:indexPath];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *d=[self.itemsForTable objectAtIndex:indexPath.row];
-    if([d valueForKey:@"SubItems"])
+    NSDictionary *dic=[self.itemsInTable objectAtIndex:indexPath.row];
+    if([dic valueForKey:@"SubItems"])
     {
-        		NSArray *ar=[d valueForKey:@"SubItems"];
-        		NSLog(@"d %@",d);
-        		BOOL isAlreadyInserted=NO;
+        		NSArray *arr=[dic valueForKey:@"SubItems"];
+        		BOOL isTableExpanded=NO;
         
-        		for(NSDictionary *subitems in ar )
+        		for(NSDictionary *subitems in arr )
                 {
-        			NSInteger index=[self.itemsForTable indexOfObjectIdenticalTo:subitems];
-        			isAlreadyInserted=(index>0 && index!=NSIntegerMax);
-        			if(isAlreadyInserted) break;
+        			NSInteger index=[self.itemsInTable indexOfObjectIdenticalTo:subitems];
+        			isTableExpanded=(index>0 && index!=NSIntegerMax);
+        			if(isTableExpanded) break;
         		}
         
-        		if(isAlreadyInserted)
+        		if(isTableExpanded)
                 {
-        			[self miniMizeThisRows:ar];
+        			[self CollapseRows:arr];
         		}
                 else
                 {
         			NSUInteger count=indexPath.row+1;
-                    NSMutableArray *arCells=[NSMutableArray array];
-        			for(NSDictionary *dInner in ar )
+                    NSMutableArray *arrCells=[NSMutableArray array];
+        			for(NSDictionary *dInner in arr )
                     {
-        				[arCells addObject:[NSIndexPath indexPathForRow:count inSection:0]];
-        				[self.itemsForTable insertObject:dInner atIndex:count++];
+        				[arrCells addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+        				[self.itemsInTable insertObject:dInner atIndex:count++];
         			}
-                [self.menuTableView insertRowsAtIndexPaths:arCells withRowAnimation:UITableViewRowAnimationLeft];
+                [self.menuTableView insertRowsAtIndexPaths:arrCells withRowAnimation:UITableViewRowAnimationLeft];
                 }
     }
 }
 
--(void)miniMizeThisRows:(NSArray*)ar
+-(void)CollapseRows:(NSArray*)ar
 {
 	for(NSDictionary *dInner in ar )
     {
-		NSUInteger indexToRemove=[self.itemsForTable indexOfObjectIdenticalTo:dInner];
+		NSUInteger indexToRemove=[self.itemsInTable indexOfObjectIdenticalTo:dInner];
 		NSArray *arInner=[dInner valueForKey:@"SubItems"];
 		if(arInner && [arInner count]>0)
         {
-			[self miniMizeThisRows:arInner];
+			[self CollapseRows:arInner];
 		}
 		
-		if([self.itemsForTable indexOfObjectIdenticalTo:dInner]!=NSNotFound)
+		if([self.itemsInTable indexOfObjectIdenticalTo:dInner]!=NSNotFound)
         {
-			[self.itemsForTable removeObjectIdenticalTo:dInner];
+			[self.itemsInTable removeObjectIdenticalTo:dInner];
 			[self.menuTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:
                                                     [NSIndexPath indexPathForRow:indexToRemove inSection:0]
                                                     ]
@@ -128,14 +126,14 @@ NSString *Title;
         cell.lblTitle.text = title;
         cell.lblTitle.textColor = [UIColor blackColor];
         
-        [cell setIndentationLevel:[[[self.itemsForTable objectAtIndex:indexPath.row] valueForKey:@"level"] intValue]];
+        [cell setIndentationLevel:[[[self.itemsInTable objectAtIndex:indexPath.row] valueForKey:@"level"] intValue]];
         cell.indentationWidth = 25;
   
         float indentPoints = cell.indentationLevel * cell.indentationWidth;
         
         cell.contentView.frame = CGRectMake(indentPoints,cell.contentView.frame.origin.y,cell.contentView.frame.size.width - indentPoints,cell.contentView.frame.size.height);
         
-        NSDictionary *d1=[self.itemsForTable objectAtIndex:indexPath.row] ;
+        NSDictionary *d1=[self.itemsInTable objectAtIndex:indexPath.row] ;
     
         if([d1 valueForKey:@"SubItems"])
         {
@@ -155,9 +153,6 @@ NSString *Title;
     CGRect buttonFrameInTableView = [btn convertRect:btn.bounds toView:self.menuTableView];
     NSIndexPath *indexPath = [self.menuTableView indexPathForRowAtPoint:buttonFrameInTableView.origin];
     
-    NSLog(@"buttonFrameInTableViewindexpath=%d",indexPath.row);
-    
-    NSLog(@"btn tag = %ld",(long)btn.tag);
     if(btn.alpha==1.0)
     {
         if ([[btn imageForState:UIControlStateNormal] isEqual:[UIImage imageNamed:@"down-arrow.png"]])
@@ -171,33 +166,32 @@ NSString *Title;
         
     }
     
-    NSDictionary *d=[self.itemsForTable objectAtIndex:indexPath.row] ;
-    NSLog(@"d = %@",d);
-    NSArray *ar=[d valueForKey:@"SubItems"];
+    NSDictionary *d=[self.itemsInTable objectAtIndex:indexPath.row] ;
+    NSArray *arr=[d valueForKey:@"SubItems"];
     if([d valueForKey:@"SubItems"])
     {
-        BOOL isAlreadyInserted=NO;
-        for(NSDictionary *subitems in ar )
+        BOOL isTableExpanded=NO;
+        for(NSDictionary *subitems in arr )
         {
-            NSInteger index=[self.itemsForTable indexOfObjectIdenticalTo:subitems];
-            isAlreadyInserted=(index>0 && index!=NSIntegerMax);
-            if(isAlreadyInserted) break;
+            NSInteger index=[self.itemsInTable indexOfObjectIdenticalTo:subitems];
+            isTableExpanded=(index>0 && index!=NSIntegerMax);
+            if(isTableExpanded) break;
         }
         
-        if(isAlreadyInserted)
+        if(isTableExpanded)
         {
-            [self miniMizeThisRows:ar];
+            [self CollapseRows:arr];
         }
         else
         {
             NSUInteger count=indexPath.row+1;
-            NSMutableArray *arCells=[NSMutableArray array];
-            for(NSDictionary *dInner in ar )
+            NSMutableArray *arrCells=[NSMutableArray array];
+            for(NSDictionary *dInner in arr )
             {
-                [arCells addObject:[NSIndexPath indexPathForRow:count inSection:0]];
-                [self.itemsForTable insertObject:dInner atIndex:count++];
+                [arrCells addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+                [self.itemsInTable insertObject:dInner atIndex:count++];
             }
-            [self.menuTableView insertRowsAtIndexPaths:arCells withRowAnimation:UITableViewRowAnimationLeft];
+            [self.menuTableView insertRowsAtIndexPaths:arrCells withRowAnimation:UITableViewRowAnimationLeft];
         }
     }
     

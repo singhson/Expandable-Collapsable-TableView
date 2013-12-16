@@ -11,7 +11,7 @@
 @interface ExpandableTableViewController : UITableViewController
 
 @property(nonatomic,strong) NSArray *items;
-@property (nonatomic, retain) NSMutableArray *itemsForTable;
+@property (nonatomic, retain) NSMutableArray *itemsInTable;
 @property (strong, nonatomic) IBOutlet UITableView *menuTableView;
 
 @end
