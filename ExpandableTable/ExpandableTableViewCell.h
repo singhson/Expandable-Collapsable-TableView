@@ -11,6 +11,6 @@
 @interface ExpandableTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *lblTitle;
 @property (weak, nonatomic) IBOutlet UIButton *btnExpand;
-- (IBAction)btnExpandList:(id)sender;
+
 
 @end

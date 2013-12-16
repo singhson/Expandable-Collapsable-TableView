@@ -44,15 +44,4 @@
                                         );
 }
 
-//- (IBAction)btnExpand:(id)sender
-//{
-//    ExpandableTableViewController *exp = [[ExpandableTableViewController alloc ] init];
-//    
-//    [exp btnExpand];
-//    
-//}
-- (IBAction)btnExpand:(id)sender {
-}
-- (IBAction)btnExpandList:(id)sender {
-}
 @end

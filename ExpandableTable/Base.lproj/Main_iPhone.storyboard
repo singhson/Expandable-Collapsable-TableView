@@ -33,14 +33,11 @@
                                             <state key="normal" image="down-arrow.png">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
-                                            <connections>
-                                                <action selector="btnExpandList:" destination="fVJ-IU-tuF" eventType="touchUpInside" id="alF-Ui-5QZ"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="btnExpand" destination="7Ny-6f-qIJ" id="qGq-2P-v4W"/>
+                                    <outlet property="btnExpand" destination="7Ny-6f-qIJ" id="I3D-lb-5NT"/>
                                     <outlet property="lblTitle" destination="ldX-u6-rzK" id="8rV-zV-7jE"/>
                                 </connections>
                             </tableViewCell>

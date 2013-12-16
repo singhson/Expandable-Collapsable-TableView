@@ -12,11 +12,6 @@
 
 @property(nonatomic,strong) NSArray *items;
 @property (nonatomic, retain) NSMutableArray *itemsForTable;
-@property(nonatomic,strong) NSDictionary *itemsInsideObject;
 @property (strong, nonatomic) IBOutlet UITableView *menuTableView;
-
-- (void)btnExpand;
-
--(void)miniMizeThisRows:(NSArray*)array;
 
 @end
